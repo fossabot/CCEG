@@ -1,0 +1,16 @@
+{
+  "record_id": "INT_000001",
+  "control_family": "AC",
+  "control_intent_vector": {
+    "objective": "access_restriction",
+    "asset_class": "identity",
+    "risk_domain": "privilege_escalation"
+  },
+  "abstraction_level": "vendor_neutral",
+  "standard_mappings": {
+    "nist_800_53": "AC-3",
+    "cis": "v1.4",
+    "iso_27001": "A.9.2.1"
+  },
+  "generated_at": "2024-01-15T10:30:00Z"
+}

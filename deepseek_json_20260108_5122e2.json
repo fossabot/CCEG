@@ -1,0 +1,36 @@
+{
+  "record_id": "REMED_000001",
+  "problem_pattern": {
+    "pattern_id": "PAT_IDENTITY_TRUST_123",
+    "failure_mode": "overly_permissive_trust_policy",
+    "affected_resource": "aws_iam_role"
+  },
+  "remediation_logic": {
+    "strategy": "trust_policy_constraint",
+    "automation_feasible": true,
+    "estimated_fix_effort": "low",
+    "implementation_steps": [
+      "Identify trust policy document",
+      "Remove wildcard principals",
+      "Add specific account constraints",
+      "Apply updated policy"
+    ],
+    "verification_checks": [
+      "Trust policy allows only required principals",
+      "No wildcards in account IDs",
+      "Conditions are properly scoped"
+    ],
+    "rollback_complexity": 0.2
+  },
+  "cost_impact": {
+    "aws_cost_delta": 0.0,
+    "operational_overhead": 0.1,
+    "risk_reduction_score": 0.85
+  },
+  "ai_training_signals": {
+    "can_autofix": true,
+    "requires_approval": false,
+    "context_complexity": 0.3
+  },
+  "generated_at": "2024-01-15T10:30:02Z"
+}
