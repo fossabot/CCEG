@@ -1,0 +1,33 @@
+{
+  "record_id": "EXEC_000001",
+  "control_family": "AC",
+  "cloud_context": {
+    "provider": "aws",
+    "service": "iam",
+    "resource_type": "aws_iam_role",
+    "region": "us-east-1"
+  },
+  "infrastructure_pattern": {
+    "pattern_id": "PAT_IDENTITY_TRUST_347",
+    "pattern_class": "identity_trust",
+    "pattern_complexity": 0.72
+  },
+  "compliance_state": {
+    "status": "non_compliant",
+    "confidence": 0.94
+  },
+  "violation_mechanics": {
+    "failure_mode": "overly_permissive_trust_policy",
+    "attack_surface": "cross_account_assume_role",
+    "blast_radius_score": 0.81
+  },
+  "evidence_model": {
+    "terraform_signal": "assume_role_policy",
+    "runtime_signal": "cloudtrail:AssumeRole",
+    "static_detectable": true
+  },
+  "labeling": {
+    "severity": "high",
+    "ml_use_case": ["policy_classification", "risk_scoring"]
+  }
+}
