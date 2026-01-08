@@ -341,8 +341,8 @@ If you use this dataset in research or commercial products, please cite:
 
 ## 📧 Contact & Support
 
-- **Commercial Licensing:** licensing@cceg-dataset.com
-- **Technical Support:** support@cceg-dataset.com
+- **Commercial Licensing:**ranasingheinfrastructure@gmail.com
+- **Technical Support:**ranasingheinfrastructure@gmail.com
 - **Issues:** GitHub Issues (for dataset bugs)
 
 ## 🗺️ Roadmap
