@@ -1,0 +1,313 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://cceg.datasets/v1/schema",
+  "title": "Cloud Compliance Execution Graph (CCEG) Schema",
+  "version": "1.0.0",
+  "description": "Synthetic dataset schema for ML-powered cloud compliance automation",
+  "definitions": {
+    "control_intent_vector": {
+      "type": "object",
+      "required": ["objective", "asset_class", "risk_domain"],
+      "properties": {
+        "objective": {
+          "type": "string",
+          "description": "Primary security objective",
+          "examples": ["access_restriction", "audit_logging", "config_management"]
+        },
+        "asset_class": {
+          "type": "string",
+          "enum": ["identity", "compute", "storage", "network", "data", "management"],
+          "description": "Cloud asset classification"
+        },
+        "risk_domain": {
+          "type": "string",
+          "description": "Risk category this control addresses",
+          "examples": ["privilege_escalation", "data_exfiltration", "config_drift"]
+        }
+      }
+    },
+    "cloud_context": {
+      "type": "object",
+      "required": ["provider", "service", "resource_type"],
+      "properties": {
+        "provider": {
+          "type": "string",
+          "const": "aws",
+          "description": "Cloud provider (currently AWS only)"
+        },
+        "service": {
+          "type": "string",
+          "description": "AWS service name",
+          "examples": ["iam", "ec2", "s3", "rds", "lambda"]
+        },
+        "resource_type": {
+          "type": "string",
+          "description": "Terraform resource type",
+          "pattern": "^aws_[a-z_]+$",
+          "examples": ["aws_iam_role", "aws_s3_bucket", "aws_security_group"]
+        },
+        "region": {
+          "type": "string",
+          "description": "AWS region",
+          "examples": ["us-east-1", "us-west-2", "eu-west-1"]
+        }
+      }
+    },
+    "infrastructure_pattern": {
+      "type": "object",
+      "required": ["pattern_id", "pattern_class", "pattern_complexity"],
+      "properties": {
+        "pattern_id": {
+          "type": "string",
+          "description": "Unique pattern identifier",
+          "pattern": "^PAT_[A-Z_]+_[0-9]{3}$"
+        },
+        "pattern_class": {
+          "type": "string",
+          "description": "Category of infrastructure pattern",
+          "examples": ["identity_trust", "network_exposure", "data_encryption", "logging_gap"]
+        },
+        "pattern_complexity": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Complexity score for detection/remediation (0=simple, 1=complex)"
+        }
+      }
+    },
+    "compliance_state": {
+      "type": "object",
+      "required": ["status", "confidence"],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["compliant", "non_compliant", "partially_compliant"],
+          "description": "Current compliance status"
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Confidence score of the assessment"
+        }
+      }
+    },
+    "violation_mechanics": {
+      "type": "object",
+      "required": ["failure_mode", "attack_surface", "blast_radius_score"],
+      "properties": {
+        "failure_mode": {
+          "type": "string",
+          "description": "Specific security failure mechanism",
+          "examples": ["overly_permissive_trust_policy", "encryption_disabled", "publicly_accessible_resource"]
+        },
+        "attack_surface": {
+          "type": "string",
+          "description": "Exploitable attack vector",
+          "examples": ["cross_account_assume_role", "internet_facing_endpoint", "unencrypted_data_access"]
+        },
+        "blast_radius_score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Potential impact scope (0=minimal, 1=catastrophic)"
+        }
+      }
+    },
+    "evidence_model": {
+      "type": "object",
+      "required": ["terraform_signal", "runtime_signal", "static_detectable"],
+      "properties": {
+        "terraform_signal": {
+          "type": "string",
+          "description": "Terraform attribute to inspect for detection",
+          "examples": ["assume_role_policy", "storage_encrypted", "ingress_rules"]
+        },
+        "runtime_signal": {
+          "type": "string",
+          "description": "CloudTrail or runtime API signal",
+          "examples": ["cloudtrail:AssumeRole", "s3:GetObject", "ec2:RunInstances"]
+        },
+        "static_detectable": {
+          "type": "boolean",
+          "description": "Whether violation is detectable via static analysis"
+        }
+      }
+    },
+    "remediation_logic": {
+      "type": "object",
+      "required": ["strategy", "automation_feasible", "estimated_fix_effort"],
+      "properties": {
+        "strategy": {
+          "type": "string",
+          "description": "Remediation approach",
+          "examples": ["trust_policy_constraint", "encryption_enablement", "network_restriction"]
+        },
+        "automation_feasible": {
+          "type": "boolean",
+          "description": "Whether remediation can be automated"
+        },
+        "estimated_fix_effort": {
+          "type": "string",
+          "enum": ["low", "medium", "high"],
+          "description": "Estimated effort to remediate"
+        },
+        "implementation_steps": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Step-by-step remediation procedure"
+        },
+        "verification_checks": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Post-remediation validation steps"
+        },
+        "rollback_complexity": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Difficulty of rolling back remediation"
+        }
+      }
+    },
+    "labeling": {
+      "type": "object",
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": ["low", "medium", "high", "critical"],
+          "description": "Security severity classification"
+        },
+        "ml_use_case": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["policy_classification", "risk_scoring", "auto_remediation", "anomaly_detection", "drift_detection", "posture_assessment"]
+          },
+          "description": "Applicable ML training scenarios"
+        }
+      }
+    }
+  },
+  "oneOf": [
+    {
+      "title": "Intent Layer Record",
+      "type": "object",
+      "required": ["record_id", "control_family", "control_intent_vector", "abstraction_level"],
+      "properties": {
+        "record_id": {
+          "type": "string",
+          "pattern": "^INT_[0-9]{6}$"
+        },
+        "control_family": {
+          "type": "string",
+          "enum": ["AC", "AU", "CM", "IA", "SC", "SI", "RA", "PL"],
+          "description": "NIST-inspired control family (abstracted)"
+        },
+        "control_intent_vector": {"$ref": "#/definitions/control_intent_vector"},
+        "abstraction_level": {
+          "type": "string",
+          "const": "vendor_neutral"
+        },
+        "standard_mappings": {
+          "type": "object",
+          "properties": {
+            "nist_800_53": {"type": "string", "pattern": "^[A-Z]{2}-[0-9]+$"},
+            "cis": {"type": "string", "pattern": "^v[0-9]+\\.[0-9]+$"},
+            "iso_27001": {"type": "string", "pattern": "^A\\.[0-9]+\\.[0-9]+$"}
+          }
+        },
+        "generated_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    {
+      "title": "Execution Layer Record",
+      "type": "object",
+      "required": ["record_id", "control_family", "control_intent_vector", "cloud_context", "infrastructure_pattern", "compliance_state", "violation_mechanics", "evidence_model", "labeling"],
+      "properties": {
+        "record_id": {
+          "type": "string",
+          "pattern": "^EXEC_[0-9]{6}$"
+        },
+        "control_family": {
+          "type": "string",
+          "enum": ["AC", "AU", "CM", "IA", "SC", "SI", "RA", "PL"]
+        },
+        "control_intent_vector": {"$ref": "#/definitions/control_intent_vector"},
+        "cloud_context": {"$ref": "#/definitions/cloud_context"},
+        "infrastructure_pattern": {"$ref": "#/definitions/infrastructure_pattern"},
+        "compliance_state": {"$ref": "#/definitions/compliance_state"},
+        "violation_mechanics": {"$ref": "#/definitions/violation_mechanics"},
+        "evidence_model": {"$ref": "#/definitions/evidence_model"},
+        "labeling": {"$ref": "#/definitions/labeling"},
+        "generated_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    {
+      "title": "Remediation Layer Record",
+      "type": "object",
+      "required": ["record_id", "problem_pattern", "remediation_logic", "cost_impact", "ai_training_signals"],
+      "properties": {
+        "record_id": {
+          "type": "string",
+          "pattern": "^REMED_[0-9]{6}$"
+        },
+        "problem_pattern": {
+          "type": "object",
+          "required": ["pattern_id", "failure_mode", "affected_resource"],
+          "properties": {
+            "pattern_id": {"type": "string"},
+            "failure_mode": {"type": "string"},
+            "affected_resource": {"type": "string"}
+          }
+        },
+        "remediation_logic": {"$ref": "#/definitions/remediation_logic"},
+        "cost_impact": {
+          "type": "object",
+          "required": ["aws_cost_delta", "operational_overhead", "risk_reduction_score"],
+          "properties": {
+            "aws_cost_delta": {
+              "type": "number",
+              "description": "Estimated monthly cost change in USD"
+            },
+            "operational_overhead": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1,
+              "description": "Additional operational complexity"
+            },
+            "risk_reduction_score": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1,
+              "description": "Risk mitigation effectiveness"
+            }
+          }
+        },
+        "ai_training_signals": {
+          "type": "object",
+          "required": ["can_autofix", "requires_approval", "context_complexity"],
+          "properties": {
+            "can_autofix": {"type": "boolean"},
+            "requires_approval": {"type": "boolean"},
+            "context_complexity": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
+          }
+        },
+        "generated_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  ]
+}
