@@ -502,9 +502,9 @@ Will be established post-release at: `https://cceg-dataset.com/research`
 
 ### How can the owner/curator/manager of the dataset be contacted?
 
-- **General Inquiries:** info@cceg-dataset.com
-- **Commercial Licensing:** licensing@cceg-dataset.com
-- **Technical Support:** support@cceg-dataset.com
+- **General Inquiries:** ranasingheinfrastructure@gmail.com
+- **Commercial Licensing:**ranasingheinfrastructure@gmail.com
+- **Technical Support:**ranasingheinfrastructure@gmail.com
 - **GitHub Issues:** github.com/cceg-dataset/cceg (for bugs)
 
 ### Is there an erratum?
