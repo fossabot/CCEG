@@ -618,4 +618,4 @@ Legal review confirmed compliance with intellectual property law.
 **Document Version:** 1.0.0  
 **Last Updated:** January 8, 2025  
 **Authors:** CCEG Dataset Team  
-**Contact:** info@cceg-dataset.com
+**Contact:** ranasingheinfrastructure@gmail.com
