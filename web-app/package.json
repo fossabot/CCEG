@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "name": "cceg-dataset-generator",
   "version": "1.0.0",
   "description": "Cloud Compliance Execution Graph (CCEG) Dataset Generator - Web Interface",
