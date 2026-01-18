@@ -104,5 +104,5 @@ See LICENSE.md in the root directory.
 ## Support
 
 For issues or questions:
-- Email: support@cceg-dataset.com
-- GitHub: https://github.com/cceg-dataset/cceg-generator
+- Email:ruwanpuragepawannimeshranasing@gmail.com
+- GitHub:https://github.com/Pa345-ai/CCEG.git
